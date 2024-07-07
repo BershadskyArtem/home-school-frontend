@@ -113,11 +113,11 @@ export type DeleteApiAuthLinkData = {
 
 export type DeleteApiAuthLinkResponse = unknown;
 
-export type GetApiAuthMagicByIdData = {
-    id: string;
+export type GetApiAuthMagicData = {
+    code: string;
 };
 
-export type GetApiAuthMagicByIdResponse = GenerateTokenResult;
+export type GetApiAuthMagicResponse = GenerateTokenResult;
 
 export type PostApiAuthMagicData = {
     requestBody: SendMagicLinkRequest;
@@ -127,6 +127,7 @@ export type PostApiAuthMagicResponse = SendMagicLinkResponse;
 
 export type GetApiAuthOauthByProviderData = {
     provider: string;
+    redirectAfter?: string;
 };
 
 export type GetApiAuthOauthByProviderResponse = unknown;
@@ -252,9 +253,9 @@ export type $OpenApiTs = {
             };
         };
     };
-    '/api/auth/magic/{id}': {
+    '/api/auth/magic': {
         get: {
-            req: GetApiAuthMagicByIdData;
+            req: GetApiAuthMagicData;
             res: {
                 /**
                  * OK
@@ -266,8 +267,6 @@ export type $OpenApiTs = {
                 400: GenerateTokenResult;
             };
         };
-    };
-    '/api/auth/magic': {
         post: {
             req: PostApiAuthMagicData;
             res: {

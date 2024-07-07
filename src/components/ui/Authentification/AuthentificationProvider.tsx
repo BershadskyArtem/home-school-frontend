@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { useUserStore } from "../../hooks/stores/useUserStore";
-import { getApiAuthTokenIntrospect } from "../../api/client";
+import { useUserStore } from "../../../hooks/stores/useUserStore";
+import { getApiAuthTokenIntrospect } from "../../../api/client";
 
 interface AuthentificationProviderProps {
     children : React.ReactNode;
@@ -26,7 +26,9 @@ export default function AuthentificationProvider({children} : AuthentificationPr
                 });
 
         } catch (error) {
-            user.deleteUser();
+            if (user.is_authentificated){
+                user.deleteUser();
+            }
             success = false;
             console.error(error);
         }
@@ -36,21 +38,27 @@ export default function AuthentificationProvider({children} : AuthentificationPr
         }
 
         const me = await getApiAuthTokenIntrospect();
-        user.updateUser({
-            email: me.email,
-            id: me.sub,
-            is_confirmed: me.is_confirmed ?? false,
-            role: me.role
-        });
+
+        if (user.email !== me.email || 
+            user.id !== me.sub ||
+            user.role !== me.role ||
+            user.is_confirmed !== me.is_confirmed)
+        {
+            user.updateUser({
+                email: me.email,
+                id: me.sub,
+                is_confirmed: me.is_confirmed ?? false,
+                role: me.role,
+                is_authentificated : true
+            });
+        }
     }
 
     useEffect(
         () => {
-            console.log('First user retrieval');
             UpdateJwtAndUser();
             const authentificationJob = setInterval(
                 async () => {
-                    console.log('another user retrieval');
                     UpdateJwtAndUser();
                 }
                 , 60000);

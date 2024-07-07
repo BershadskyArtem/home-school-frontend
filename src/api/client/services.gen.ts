@@ -3,7 +3,7 @@
 import type { CancelablePromise } from './core/CancelablePromise';
 import { OpenAPI } from './core/OpenAPI';
 import { request as __request } from './core/request';
-import type { PostApiAuthLinkData, PostApiAuthLinkResponse, DeleteApiAuthLinkData, DeleteApiAuthLinkResponse, GetApiAuthMagicByIdData, GetApiAuthMagicByIdResponse, PostApiAuthMagicData, PostApiAuthMagicResponse, GetApiAuthOauthByProviderData, GetApiAuthOauthByProviderResponse, GetApiAuthOauthCallbackByProviderData, PostApiAuthPasswordRegisterData, PostApiAuthPasswordRegisterResponse, PostApiAuthPasswordConfirmData, PostApiAuthPasswordConfirmResponse, GetApiAuthPasswordConfirmData, GetApiAuthPasswordConfirmResponse, PostApiAuthLoginData, PostApiAuthLoginResponse, GetApiReportsByIdData, GetApiReportsByIdResponse, DeleteApiReportsByIdData, DeleteApiReportsByIdResponse, PatchApiReportsByIdData, PatchApiReportsByIdResponse, GetApiReportsData, GetApiReportsResponse, PostApiReportsData, PostApiReportsResponse, GetApiAuthLogoutData, GetApiAuthLogoutResponse, PostApiAuthTokenData, PostApiAuthTokenResponse, GetApiAuthTokenIntrospectResponse } from './types.gen';
+import type { PostApiAuthLinkData, PostApiAuthLinkResponse, DeleteApiAuthLinkData, DeleteApiAuthLinkResponse, GetApiAuthMagicData, GetApiAuthMagicResponse, PostApiAuthMagicData, PostApiAuthMagicResponse, GetApiAuthOauthByProviderData, GetApiAuthOauthByProviderResponse, GetApiAuthOauthCallbackByProviderData, PostApiAuthPasswordRegisterData, PostApiAuthPasswordRegisterResponse, PostApiAuthPasswordConfirmData, PostApiAuthPasswordConfirmResponse, GetApiAuthPasswordConfirmData, GetApiAuthPasswordConfirmResponse, PostApiAuthLoginData, PostApiAuthLoginResponse, GetApiReportsByIdData, GetApiReportsByIdResponse, DeleteApiReportsByIdData, DeleteApiReportsByIdResponse, PatchApiReportsByIdData, PatchApiReportsByIdResponse, GetApiReportsData, GetApiReportsResponse, PostApiReportsData, PostApiReportsResponse, GetApiAuthLogoutData, GetApiAuthLogoutResponse, PostApiAuthTokenData, PostApiAuthTokenResponse, GetApiAuthTokenIntrospectResponse } from './types.gen';
 
 /**
  * Link account to user
@@ -47,15 +47,15 @@ export const deleteApiAuthLink = (data: DeleteApiAuthLinkData): CancelablePromis
  * Magic callback
  * Authenticates user using magic link in route
  * @param data The data for the request.
- * @param data.id
+ * @param data.code
  * @returns GenerateTokenResult OK
  * @throws ApiError
  */
-export const getApiAuthMagicById = (data: GetApiAuthMagicByIdData): CancelablePromise<GetApiAuthMagicByIdResponse> => { return __request(OpenAPI, {
+export const getApiAuthMagic = (data: GetApiAuthMagicData): CancelablePromise<GetApiAuthMagicResponse> => { return __request(OpenAPI, {
     method: 'GET',
-    url: '/api/auth/magic/{id}',
-    path: {
-        id: data.id
+    url: '/api/auth/magic',
+    query: {
+        code: data.code
     },
     errors: {
         400: 'Bad Request'
@@ -85,6 +85,7 @@ export const postApiAuthMagic = (data: PostApiAuthMagicData): CancelablePromise<
  * Redirects to a given provider for authentification
  * @param data The data for the request.
  * @param data.provider
+ * @param data.redirectAfter
  * @returns unknown OK
  * @throws ApiError
  */
@@ -93,6 +94,9 @@ export const getApiAuthOauthByProvider = (data: GetApiAuthOauthByProviderData): 
     url: '/api/auth/oauth/{provider}',
     path: {
         provider: data.provider
+    },
+    query: {
+        redirectAfter: data.redirectAfter
     }
 }); };
 

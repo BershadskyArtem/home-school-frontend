@@ -1,6 +1,14 @@
 import { create } from 'zustand';
-import { IUser } from '../../respones/IUser';
 import { createJSONStorage, persist } from 'zustand/middleware';
+
+export interface IUser {
+    email? : string | null | undefined;
+    id? : string | null | undefined;
+    role? : string | null | undefined;
+    username? : string | null | undefined;
+    is_confirmed : boolean;
+    is_authentificated : boolean;
+}
 
 interface IUserMutator {
     updateUser : (newUser : Partial<IUser>) => void;
